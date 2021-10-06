@@ -714,7 +714,7 @@ isNewtypeValName :: Name
 isNewtypeValName = mkGD_b_v "isNewtype"
 
 fromValName :: Name
-fromValName = mkGD_b_v "from"
+fromValName = mkGD_v "from"
 
 from1ValName :: Name
 from1ValName = mkGD_v "from1"
