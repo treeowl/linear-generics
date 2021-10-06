@@ -135,7 +135,7 @@ newtype TestFunctor a = TestFunctor (Maybe a)
 
 newtype TestHigherEq a = TestHigherEq (Maybe a)
   deriving stock (GHCG.Generic)
-  deriving Generic via (GHCGenerically a)
+  deriving Generic via (GHCGenerically (TestHigherEq a))
   deriving (GEq) via (Default (TestHigherEq a))
 
 -- These types correspond to the hypothetical examples in the module
