@@ -1,4 +1,3 @@
-{-# options_ghc -ddump-if-trace #-}
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE TemplateHaskell #-}
