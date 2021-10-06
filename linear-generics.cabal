@@ -82,6 +82,7 @@ library
   hs-source-dirs:       src
   exposed-modules:      Generics.Deriving
                         Generics.Deriving.Base
+                        Generics.Deriving.ViaGHCGenerics
                         Generics.Deriving.Instances
                         Generics.Deriving.Copoint
                         Generics.Deriving.ConNames
@@ -104,6 +105,7 @@ library
                         Generics.Deriving.TH.Internal
                         Paths_linear_generics
                         Generics.Deriving.TH.Post4_9
+                        Generics.Deriving.Util
 
   build-depends:        base >= 4.9 && < 5
                       , containers       >= 0.1   && < 0.7

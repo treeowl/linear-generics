@@ -898,7 +898,7 @@ toCon gk wrap m i
           [foldBal prod (conP u1DataName []) (zipWith (toField gk) fNames ts)])
         (normalB $ foldl appE (conE cn)
                          (zipWith (\nr -> resolveTypeSynonyms >=> toConUnwC gk nr)
-                         fNames ts)) []
+                           fNames ts)) []
   where prod x y = conP productDataName [x,y]
 
 toConUnwC :: GenericKind -> Name -> Type -> Q Exp

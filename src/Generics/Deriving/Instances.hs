@@ -36,6 +36,7 @@ import System.Exit (ExitCode)
 import Data.Ord (Down)
 import Control.Arrow (Kleisli(..))
 import Generics.Deriving.Base.Internal
+import Generics.Deriving.ViaGHCGenerics
 import qualified GHC.Generics as GHCG
 import qualified Data.Functor.Sum as FSum
 import qualified Data.Functor.Product as FProd

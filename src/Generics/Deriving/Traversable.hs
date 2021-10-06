@@ -36,7 +36,7 @@ import qualified Data.Monoid as Monoid (First, Last, Product, Sum)
 import           Data.Monoid (Dual)
 
 import           Generics.Deriving.Base
-import           Generics.Deriving.Base.Internal ((.#))
+import           Generics.Deriving.Util ((.#))
 import           Generics.Deriving.Foldable
 import           Generics.Deriving.Functor
 
