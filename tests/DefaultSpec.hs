@@ -25,16 +25,16 @@ module DefaultSpec where
 
 import Test.Hspec
 
-#if __GLASGOW_HASKELL__ >= 806
 import Test.Hspec.QuickCheck
 
 import Data.Semigroup (First(..))
 import Data.Foldable (sequenceA_)
 import Generics.Deriving hiding (universe)
+import Generics.Deriving.Base.Internal (GHCGenerically, GHCGenerically1)
 import Generics.Deriving.Default ()
 import Generics.Deriving.Foldable (GFoldable(..))
 import Generics.Deriving.Semigroup (GSemigroup(..))
-#endif
+import qualified GHC.Generics as GHCG
 
 spec :: Spec
 spec = do
@@ -139,20 +139,24 @@ newtype TestFunctor a = TestFunctor (Maybe a)
   deriving (GFunctor) via (Default1 Maybe)
 
 newtype TestHigherEq a = TestHigherEq (Maybe a)
-  deriving stock (Generic)
+  deriving stock (GHCG.Generic)
+  deriving Generic via (GHCGenerically a)
   deriving (GEq) via (Default (TestHigherEq a))
 
 -- These types correspond to the hypothetical examples in the module
 -- documentation.
 
 data MyType = MyType Bool
-  deriving (Generic)
+  deriving stock (GHCG.Generic)
+  deriving Generic via (GHCGenerically MyType)
   deriving (GEq) via (Default MyType)
 
 deriving via (Default MyType) instance GShow MyType
 
 data MyType1 a = MyType1 a
-  deriving (Generic, Generic1)
+  deriving (GHCG.Generic, GHCG.Generic1)
+  deriving Generic via (GHCGenerically (MyType1 a))
+  deriving Generic1 via (GHCGenerically MyType1)
   deriving (GEq) via (Default (MyType1 a))
   deriving (GFunctor) via (Default1 MyType1)
 

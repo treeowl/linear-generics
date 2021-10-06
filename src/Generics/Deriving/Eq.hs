@@ -505,9 +505,6 @@ instance GEq
 instance GEq (Ptr a) where
   geq = (==)
 
-instance GEq (f p) => GEq (Rec1 f p) where
-  geq = geqdefault
-
 instance GEq SeekMode where
   geq = (==)
 

@@ -499,9 +499,6 @@ instance GEnum
   genum = genumDefault
 #endif
 
-instance GEnum (f p) => GEnum (Rec1 f p) where
-  genum = genumDefault
-
 instance GEnum a => GEnum (Sum a) where
   genum = genumDefault
 

@@ -5,8 +5,10 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE DeriveFunctor #-}
 {-# LANGUAGE DeriveFoldable #-}
+{-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DeriveTraversable #-}
 {-# LANGUAGE EmptyDataDecls #-}
+{-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE InstanceSigs #-}
 {-# LANGUAGE KindSignatures #-}
@@ -31,6 +33,8 @@ module Generics.Deriving.Base.Internal
   , toLinear
   , GHCGenerically(..)
   , GHCGenerically1(..)
+  , (.#)
+  , (#.)
   , module GHCGenerics
   ) where
 import GHC.Generics as GHCGenerics hiding (Generic (..), Generic1 (..), (:.:)(..), Rec1)
@@ -42,6 +46,7 @@ import Data.Coerce (Coercible, coerce)
 import GHC.TypeLits (TypeError, ErrorMessage (..))
 
 newtype (f :.: g) x = Comp1 { unComp1 :: f (g x) }
+  deriving (Eq, Ord, Show, Read, G.Generic, G.Generic1)
 
 toLinear
   :: forall (r1 :: RuntimeRep) (r2 :: RuntimeRep)
@@ -77,13 +82,13 @@ instance G.Generic a => Generic (GHCGenerically a) where
 class Generic a where
   type family Rep a :: Type -> Type
 
-  to :: Rep a p %1-> a
-  from :: a %1-> Rep a p
+  to :: forall m p. Rep a p %m-> a
+  from :: forall m p. a %m-> Rep a p
 
 class Generic1 f where
   type family Rep1 f :: k -> Type
-  to1 :: Rep1 f p %1-> f p
-  from1 :: f p %1-> Rep1 f p
+  to1 :: forall p m. Rep1 f p %m-> f p
+  from1 :: forall p m. f p %m-> Rep1 f p
 
 -- | When @a@ is an instance of @"GHC.Generics".'G.Generic1'@, and its 'G.Rep1'
 -- contains no compositions, @GHCGenerically1 a@ is an instance of 'Generic1'.
@@ -105,10 +110,10 @@ newtype GHCGenerically1 f a = GHCGenerically1 { unGHCGenerically1 :: f a }
 
 instance (G.Generic1 f, Repairable ('ShowType f) (G.Rep1 f)) => Generic1 (GHCGenerically1 f) where
   type Rep1 (GHCGenerically1 f) = Repair (G.Rep1 f)
-  to1 :: forall a. Rep1 (GHCGenerically1 f) a %1-> GHCGenerically1 f a
+  to1 :: forall a m. Rep1 (GHCGenerically1 f) a %m-> GHCGenerically1 f a
   to1 = unsafeCoerce (GHCGenerically1 #. G.to1 @_ @f @a)
 
-  from1 :: forall a. GHCGenerically1 f a %1-> Rep1 (GHCGenerically1 f) a
+  from1 :: forall a m. GHCGenerically1 f a %m-> Rep1 (GHCGenerically1 f) a
   from1 = unsafeCoerce (G.from1 @_ @f @a .# unGHCGenerically1)
 
 -- | A @"GHC.Generics".'G.Rep1'@ is @Repairable@ if it contains no
